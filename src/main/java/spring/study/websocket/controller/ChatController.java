@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring.study.websocket.model.ChatMessage;
 import spring.study.websocket.model.ChatRoom;
+import spring.study.websocket.pubsub.RedisPublisher;
+import spring.study.websocket.repository.ChatRoomRepository;
 
 import java.util.List;
 
@@ -14,19 +16,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final SimpMessageSendingOperations messagingTemplate;
+    private final RedisPublisher redisPublisher;
+    private final ChatRoomRepository chatRoomRepository;
 
     /**
      * @MessageMapping을 통해 웹 소켓으로 들어오는 메세지 발행을 처리
-     * /pub/chat/message 로 발행요청을 하면 controller가 해당 메세지를 받아 처리
-     * 메세지가 발행되면 /sub/chat/room/{roomId}로 메세지를 전송
+     *  웹 소켓 "/pub/chat/message" 로 들어오는 메세지 처리
      */
     @MessageMapping("/chat/message")
     public void message(ChatMessage message){
         if(ChatMessage.MessageType.ENTER.equals(message.getType())){
+            chatRoomRepository.enterChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
         }
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        // 웹 소켓에 발행된 메세지를 redis로 발행한다. publish
+        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()),message);
     }
 
 }
