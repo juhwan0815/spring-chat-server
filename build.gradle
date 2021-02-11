@@ -22,19 +22,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-//	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
-//	implementation 'org.springframework.boot:spring-boot-devtools'
-//
-//	 webjar는 js를 로드하기 위해 선언
-//	implementation 'org.webjars.bower:bootstrap:4.3.1'
-//	implementation 'org.webjars.bower:vue:2.5.16'
-//	implementation 'org.webjars.bower:axios:0.17.1'
+	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
-	// sockjs 낮은 버전의 브라우저에서도 웹 소켓을 사용할 수 있도록 해주는 라이브러리
-//	implementation 'org.webjars:sockjs-client:1.1.2'
+//	 webjar는 js를 로드하기 위해 선언
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+	implementation 'org.webjars.bower:vue:2.5.16'
+	implementation 'org.webjars.bower:axios:0.17.1'
+
+//	 sockjs 낮은 버전의 브라우저에서도 웹 소켓을 사용할 수 있도록 해주는 라이브러리
+	implementation 'org.webjars:sockjs-client:1.1.2'
 //
-//	implementation 'org.webjars:stomp-websocket:2.3.3-1'
-//	implementation 'com.google.code.gson:gson:2.8.0'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'com.google.code.gson:gson:2.8.0'
 
 //	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	//embedded-redis
