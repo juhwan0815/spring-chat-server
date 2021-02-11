@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   redis:
     host: localhost
     port: 6379
@@ -11,6 +13,8 @@ spring:
     template-loader-path: classpath:/templates/
     suffix: .ftl
     cache: true
+  jwt:
+    secret: 1234
 
 
 

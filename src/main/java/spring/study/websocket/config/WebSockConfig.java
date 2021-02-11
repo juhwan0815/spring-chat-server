@@ -2,12 +2,16 @@ package spring.study.websocket.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker // Stomp 활성화
 public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final StompHandler stompHandler;
 
     /**
      * pub/sub 메세징을 구현하기 위해 메세지를 발행하는 요청의 prefix는 /pub로 시작
@@ -28,5 +32,13 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws-stomp")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
+    }
+
+    /**
+     * StompHandler가 웹 소켓 앞단에서 token를 체크할수 있도록 인터셉터 설정
+     */
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(stompHandler);
     }
 }

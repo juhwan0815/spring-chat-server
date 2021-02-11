@@ -1,11 +1,15 @@
 package spring.study.websocket.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import spring.study.websocket.model.ChatRoom;
+import spring.study.websocket.model.LoginInfo;
 import spring.study.websocket.repository.ChatRoomRepository;
+import spring.study.websocket.service.JwtTokenProvider;
 
 import java.util.List;
 
@@ -15,6 +19,16 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @GetMapping("/user")
+    @ResponseBody
+    public LoginInfo getUserInfo(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        String token = jwtTokenProvider.generateToken(name);
+        return LoginInfo.builder().name(name).token(token).build();
+    }
 
     // 채팅 리스트 화면
     @GetMapping("/room")
